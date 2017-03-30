@@ -20,10 +20,10 @@
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
+ 		<dependency>
 			<groupId>com.target.promotions</groupId>
 			<artifactId>my-retail-contract</artifactId>
 			<version>0.1-SNAPSHOT</version>
-		</dependency>
+		</dependency> 
 	</dependencies>
 </project>

@@ -3,7 +3,7 @@ package org.my.retail.bootstrap;
 import org.my.retail.contract.Product;
 import org.my.retail.contract.ProductPriceInfo;
 import org.my.retail.dao.ProductDao;
-import org.my.retail.service.ProductService;
+import org.my.retail.utility.ProductValidator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -38,4 +38,11 @@ public class Bootstrap extends SpringServletContainerInitializer{
 	 Product getProduct(){
 		 return new Product();
 	 }
+	 
+	 @Bean
+	 ProductValidator getValidator(){
+		 return new ProductValidator();
+	 }
+	 
+	
 }
