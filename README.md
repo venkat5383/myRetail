@@ -1,6 +1,26 @@
 **myRetail**
 ----
   'myRetail' is a maven project which consists of contract maven module and service maven module. Service module at this point of time only supports GET and UPDATE operations on product price.
+  
+ **Instructions to run:**
+ 
+  As this application is consists of two maven modules, Contract jar should be compiled and packaged first(if we use repository then no need). Then service is using spring boot, we can run that using spring maven commands.
+  
+  my-retail-contract packaging command - mvn clean install -X -pl com.target.promotions:my-retail-contract
+  my-retail-service run command  - mvn spring-boot:run
+  								with below parameters
+  								Spring.profiles.active = dev
+  								logging.file = app/log
+  								
+  	Mongo db address information is given in property file. If you are using mongo db installed other than local machine please update the property file.
+  
+ **Swagger Page:**
+ 
+ http://{server}:8080/swagger-ui.html
+ 
+  
+  **End Points Available:**
+  
 
 * **URL**
 
