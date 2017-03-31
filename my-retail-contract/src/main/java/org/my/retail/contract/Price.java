@@ -10,6 +10,18 @@ public class Price {
 	public BigDecimal getValue() {
 		return value;
 	}
+	@Override
+	public String toString() {
+		return "Price [value=" + value + ", currency_code=" + currency_code + "]";
+	}
+	public Price(BigDecimal value, String currency_code) {
+		super();
+		this.value = value;
+		this.currency_code = currency_code;
+	}
+	public Price() {
+
+	}
 	public void setValue(BigDecimal value) {
 		this.value = value;
 	}

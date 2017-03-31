@@ -17,4 +17,8 @@ public class ErrorResponse {
 	public void setErrorMessage(String errorMessage) {
 		this.errorMessage = errorMessage;
 	}
+	@Override
+	public String toString() {
+		return "ErrorResponse [errorCode=" + errorCode + ", errorMessage=" + errorMessage + "]";
+	}
 }

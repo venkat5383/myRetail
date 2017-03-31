@@ -23,6 +23,20 @@ public class ProductPriceInfo {
 	public String getProductName() {
 		return productName;
 	}
+	@Override
+	public String toString() {
+		return "ProductPriceInfo [productId=" + productId + ", productName=" + productName + ", current_price="
+				+ current_price.toString() + "]";
+	}
+	public ProductPriceInfo() {
+		
+	}
+	public ProductPriceInfo(String productId, String productName, Price current_price) {
+		
+		this.productId = productId;
+		this.productName = productName;
+		this.current_price = current_price;
+	}
 	public void setProductName(String productName) {
 		this.productName = productName;
 	}

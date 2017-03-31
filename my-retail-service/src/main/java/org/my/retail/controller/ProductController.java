@@ -35,7 +35,7 @@ public class ProductController {
 	@Autowired
 	ProductValidator productValidator;
 
-	
+
 	ErrorResponse errorResponse;
 
 	@RequestMapping(value = "/{productId}", produces = {MediaType.APPLICATION_JSON_VALUE}, method = RequestMethod.GET)
@@ -44,39 +44,42 @@ public class ProductController {
 		try{
 			errorResponse = productValidator.validateProductId(productId);
 			if(errorResponse.equals(null)||!errorResponse.getErrorCode().equals("")){
-				System.out.println("line 47");
+				log.error("error occured in if::"+errorResponse.toString());
 				return new ResponseEntity<ErrorResponse>(errorResponse,HttpStatus.BAD_REQUEST);
 			}else{
-				System.out.println("line 50");
 				productPriceInfo.setProductId(productId);
 				productPriceInfo = productService.enrichProductPriceInfo(productPriceInfo);
+				log.error("error occured in else::"+errorResponse.toString());
 				return ResponseEntity.ok(productPriceInfo);
 			}
 		}catch(Exception e){
-			System.out.println("line 56"+e.getMessage());
 			errorResponse = new ErrorResponse();
 			errorResponse.setErrorCode(Constants.ERROR_CODE_PRODUCT_FETCH_FAIED);
 			errorResponse.setErrorMessage(e.getMessage());
-			return new ResponseEntity<ErrorResponse>(errorResponse,HttpStatus.BAD_REQUEST);
+			log.error("error occured in catch::"+errorResponse.toString());
+			return new ResponseEntity<ErrorResponse>(errorResponse,HttpStatus.NOT_FOUND);
 		}
 	}
 
-	@RequestMapping(value = "/{productId}", produces = {MediaType.APPLICATION_JSON_VALUE}, method = RequestMethod.PUT)
+	@RequestMapping(value = "/{productId}", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.TEXT_PLAIN_VALUE,MediaType.APPLICATION_JSON_VALUE},method = RequestMethod.PUT)
 	public ResponseEntity<?> updateProduct(@Valid @RequestBody ProductPriceInfo productPriceInfo){
 		log.info("Inside updateProduct method in controller with productId::"+productPriceInfo.getProductId());
-		errorResponse = productValidator.validateProductPriceInfo(productPriceInfo);
-		if(!errorResponse.getErrorCode().equals("")){
-			return new ResponseEntity<ErrorResponse>(errorResponse,HttpStatus.BAD_REQUEST);
-		}else{
-			try{
-				productService.updateProductPrice(productPriceInfo);
-				return ResponseEntity.ok("Succesfully Updated");
-			}catch(Exception e){
-				errorResponse = new ErrorResponse();
-				errorResponse.setErrorCode(Constants.ERROR_CODE_UPDATE_FAILED);
-				errorResponse.setErrorMessage(e.getMessage());
+		try{
+			errorResponse = productValidator.validateProductPriceInfo(productPriceInfo);
+			if(!errorResponse.getErrorCode().equals("")){
+				log.error("error occured::"+errorResponse.toString());
 				return new ResponseEntity<ErrorResponse>(errorResponse,HttpStatus.BAD_REQUEST);
+			}else{
+				productService.updateProductPrice(productPriceInfo);
+				log.error("error occured::"+errorResponse.toString());
+				return ResponseEntity.ok("Succesfully Updated");
 			}
+		}catch(Exception e){
+			errorResponse = new ErrorResponse();
+			errorResponse.setErrorCode(Constants.ERROR_CODE_UPDATE_FAILED);
+			errorResponse.setErrorMessage(e.getMessage());
+			log.error("error occured::"+errorResponse.toString());
+			return new ResponseEntity<ErrorResponse>(errorResponse,HttpStatus.BAD_REQUEST);
 		}
 	}
 

@@ -2,8 +2,8 @@ package org.my.retail.utility;
 
 import org.my.retail.contract.ErrorResponse;
 import org.my.retail.contract.ProductPriceInfo;
+import org.apache.commons.lang3.StringUtils;
 import org.my.retail.constants.Constants;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -26,18 +26,10 @@ public class ProductValidator {
 	public ErrorResponse validateProductId(String productId) {
 		// TODO Auto-generated method stub
 		errorResponse = new ErrorResponse();
-		if(productId.isEmpty()||productId.equals(null)){
+		if(productId.isEmpty()||productId.equals(null)||!StringUtils.isNumeric(productId)){
 			errorResponse.setErrorCode(Constants.ERROR_CODE_INVALID_PRODUCTID);
 			errorResponse.setErrorMessage(Constants.ERROR_MSG_INVALID_PRODUCTID);
 			return errorResponse;
-		}else{
-			try{
-				Integer.parseInt(productId);
-			}catch(Exception e){
-				errorResponse.setErrorCode(Constants.ERROR_CODE_INVALID_PRODUCTID);
-				errorResponse.setErrorMessage(Constants.ERROR_MSG_INVALID_PRODUCTID);
-				return errorResponse;
-			}
 		}
 		return errorResponse;
 	}
