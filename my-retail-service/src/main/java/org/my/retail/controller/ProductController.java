@@ -6,6 +6,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 import javax.validation.Valid;
 
 import org.my.retail.contract.ErrorResponse;
@@ -22,6 +28,7 @@ import org.springframework.http.ResponseEntity;
 
 @RestController
 @RequestMapping(value = "/products")
+@Api( value = "/products", description = "Product Service Controller" )
 public class ProductController {
 
 	private static final Logger log = LoggerFactory.getLogger(ProductController.class);
@@ -37,9 +44,18 @@ public class ProductController {
 
 
 	ErrorResponse errorResponse;
-
+	
+	@ApiOperation( 
+		    value = "Find product name and current price by product id", 
+		    notes = "Find product name and current price by product id", 
+		    response = ProductPriceInfo.class 
+		)
+		@ApiResponses( {
+		    @ApiResponse( code = 404, message = "Invalid product id", response = ErrorResponse.class )    
+		} )
 	@RequestMapping(value = "/{productId}", produces = {MediaType.APPLICATION_JSON_VALUE}, method = RequestMethod.GET)
-	public ResponseEntity<?> getProduct(@Valid @PathVariable String productId){
+	public ResponseEntity<?> getProduct( @ApiParam( value = "productId", required = true ) 
+										@Valid @PathVariable String productId){
 		log.info("Inside getProduct method in controller with productId::"+productId);
 		try{
 			errorResponse = productValidator.validateProductId(productId);
@@ -61,6 +77,15 @@ public class ProductController {
 		}
 	}
 
+	@ApiOperation( 
+		    value = "Update current price of product", 
+		    notes = "Update current price of product", 
+		    response = ProductPriceInfo.class 
+		)
+		@ApiResponses( {
+		    @ApiResponse( code = 404, message = "Invalid product id", response = ErrorResponse.class )    
+		} )
+	
 	@RequestMapping(value = "/{productId}", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.TEXT_PLAIN_VALUE,MediaType.APPLICATION_JSON_VALUE},method = RequestMethod.PUT)
 	public ResponseEntity<?> updateProduct(@Valid @RequestBody ProductPriceInfo productPriceInfo){
 		log.info("Inside updateProduct method in controller with productId::"+productPriceInfo.getProductId());
